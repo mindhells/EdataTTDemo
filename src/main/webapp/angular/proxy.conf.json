@@ -1,0 +1,6 @@
+{
+    "/webapi": {
+        "target": "http://localhost:8080/demo",
+        "secure": false
+    }
+}

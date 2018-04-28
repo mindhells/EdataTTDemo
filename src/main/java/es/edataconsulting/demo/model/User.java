@@ -22,10 +22,10 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Column
+	@Column(unique = true)
 	private String name;
 	
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
         name = "TM_USERS_ROLES", 
         joinColumns = { @JoinColumn(name = "user_id") }, 

@@ -1,7 +1,9 @@
 package es.edataconsulting.demo.resources;
  
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import es.edataconsulting.demo.model.Role;
 import es.edataconsulting.demo.model.User;
 import es.edataconsulting.demo.service.UserService;
 
@@ -62,6 +65,17 @@ public class UserResources {
 	
 	@POST
 	public Response addUser(User user) {
+		//toDo: handle ORM exceptions
+		
+		entityManager.getTransaction().begin();		
+		if (user.getRoles().isEmpty()) {
+			Set<Role> roleSet = new HashSet<>();
+			roleSet.add(entityManager.find(Role.class, "standard"));
+			user.setRoles(roleSet);
+		}
+		entityManager.persist(user);
+		entityManager.getTransaction().commit();
+	      
 		return Response.status(Status.CREATED)
 				.entity(user)
 				.build();

@@ -17,11 +17,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @Table(name="TM_ROLES")
 public class Role {
 	
-	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Column
+	@Id
+	@Column(unique = true)
 	private String name;
 	
 	@ManyToMany(mappedBy = "roles")

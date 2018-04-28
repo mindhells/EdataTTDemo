@@ -46,7 +46,9 @@ public class UserResources {
 			@QueryParam("orderBy") List<String> orderBy) {
 		
 		Query q = entityManager.createQuery("SELECT u from User u");
-	    return (List<User>) q.getResultList();
+		@SuppressWarnings("unchecked")
+		List<User> users = q.getResultList();
+	    return users;
 		//return this.userService.getAllUsers();
 	}
 	
@@ -78,6 +80,6 @@ public class UserResources {
 	
 	@Path("/{userId}/roles")
 	public RoleResources getRoleReources() {
-		return new RoleResources();
+		return new RoleResources(this.entityManager);
 	}
 }

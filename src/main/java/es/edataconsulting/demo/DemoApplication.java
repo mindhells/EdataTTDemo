@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.ws.rs.core.Application;
 
+import es.edataconsulting.demo.model.Role;
 import es.edataconsulting.demo.model.User;
 import es.edataconsulting.demo.resources.UserResources;
 import es.edataconsulting.exception.GenericExceptionMapper;
@@ -43,7 +44,16 @@ public class DemoApplication extends Application {
 	
 	private void PopulateDatabase(EntityManager entityManager) {
 		entityManager.getTransaction().begin();
-		entityManager.persist( new User("User 1") );
+		Role standardRole = new Role("standard");
+		entityManager.persist(standardRole);
+		Role adminRole = new Role("admin");
+		entityManager.persist(adminRole);
+		Set<Role> roles = new HashSet<>();
+		roles.add(standardRole);
+		roles.add(adminRole);
+		User adminUser = new User("User 1");
+		adminUser.setRoles(roles);
+		entityManager.persist(adminUser);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}

@@ -3,6 +3,9 @@ package es.edataconsulting.demo.resources;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -29,14 +32,22 @@ public class UserResources {
 	
 	UserService userService = new UserService();
 	
+	private EntityManager entityManager; 
+	
+	public UserResources(EntityManagerFactory entityManagerFactory) {
+		super();
+		this.entityManager = entityManagerFactory.createEntityManager();
+	}
+
 	@GET
 	public List<User> getUsers(
 			@DefaultValue("10") @QueryParam("limit") long limit, 
 			@QueryParam("offset") long offset, 
 			@QueryParam("orderBy") List<String> orderBy) {
 		
-		
-		return this.userService.getAllUsers();
+		Query q = entityManager.createQuery("SELECT u from User u");
+	    return (List<User>) q.getResultList();
+		//return this.userService.getAllUsers();
 	}
 	
 	@GET

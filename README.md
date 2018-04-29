@@ -9,3 +9,5 @@ Technical test DEMO
 - Created an in memory H2 database using Hibernate and following JPA standard
 - Populate and seed database during servlet initialization
 - Exposed user roles with requested format using Jackson annotations
+- Added User service pagination and sorting functionality 
+- Created a Basic security provider that supports RolesAllowed and PermitAll security annotations based on User and Role persistent models

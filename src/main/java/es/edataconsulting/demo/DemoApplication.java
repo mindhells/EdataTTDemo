@@ -10,6 +10,7 @@ import javax.ws.rs.core.Application;
 
 import es.edataconsulting.demo.model.Role;
 import es.edataconsulting.demo.model.User;
+import es.edataconsulting.demo.providers.AuthenticationProvider;
 import es.edataconsulting.demo.resources.UserResources;
 import es.edataconsulting.exception.GenericExceptionMapper;
 
@@ -35,8 +36,10 @@ public class DemoApplication extends Application {
 	    
 	    GenericExceptionMapper genericExceptionMapper = new GenericExceptionMapper();
 	    UserResources userResources = new UserResources(entityManagerFactory);
+	    AuthenticationProvider authProvider = new AuthenticationProvider(entityManagerFactory);
 	    
 	    s.add(genericExceptionMapper);
+	    s.add(authProvider);
 	    s.add(userResources);
 	    
 	    return s;
@@ -51,7 +54,7 @@ public class DemoApplication extends Application {
 		Set<Role> roles = new HashSet<>();
 		roles.add(standardRole);
 		roles.add(adminRole);
-		User adminUser = new User("User 1");
+		User adminUser = new User("User 1", "admin", "3d4t4");
 		adminUser.setRoles(roles);
 		entityManager.persist(adminUser);
 		entityManager.getTransaction().commit();

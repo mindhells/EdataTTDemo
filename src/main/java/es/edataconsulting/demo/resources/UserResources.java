@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
@@ -44,7 +46,7 @@ public class UserResources {
 	
 	//toDo: handle ORM exceptions
 	
-	
+	@PermitAll
 	@GET
 	public List<User> getUsers(
 			@DefaultValue("10") @QueryParam("limit") int limit, 
@@ -68,6 +70,7 @@ public class UserResources {
 		return q.getResultList();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/{userId}")
 	public User getUser(@PathParam("userId") long userId) {
@@ -76,6 +79,7 @@ public class UserResources {
 	}
 	
 	@POST
+	@RolesAllowed("admin")
 	public Response addUser(User user) {
 		entityManager.getTransaction().begin();		
 		if (user.getRoles().isEmpty()) {
@@ -91,6 +95,7 @@ public class UserResources {
 	}
 	
 	@PUT
+	@RolesAllowed("admin")
 	public User updateUser(User user) {
 		entityManager.getTransaction().begin();		
 		entityManager.merge(user);
@@ -99,6 +104,7 @@ public class UserResources {
 	}
 	
 	@DELETE
+	@RolesAllowed("admin")
 	@Path("/{userId}")
 	public void deleteUser(@PathParam("userId") long userId) {
 		User user = entityManager.find(User.class, userId);
@@ -107,6 +113,7 @@ public class UserResources {
 		entityManager.getTransaction().commit();
 	}
 	
+	@PermitAll
 	@Path("/{userId}/roles")
 	public RoleResources getRoleReources() {
 		return new RoleResources(this.entityManager);

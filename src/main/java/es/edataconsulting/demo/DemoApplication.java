@@ -55,8 +55,24 @@ public class DemoApplication extends Application {
 		roles.add(standardRole);
 		roles.add(adminRole);
 		User adminUser = new User("User 1", "admin", "3d4t4");
+		User felipe = new User("Felipe", "felipe", "s3cret");
+		User roberto = new User("Roberto", "roberto", "s3cret");
+		User maria = new User("Maria", "maria", "s3cret");
+		User rebeca = new User("Rebeca", "rebeca", "s3cret");
+		Set<Role> rolesStandard = new HashSet<>();
+		rolesStandard.add(standardRole);		
+		Set<Role> rolesAdmin = new HashSet<>();
+		rolesAdmin.add(adminRole);		
+		felipe.setRoles(rolesStandard);
+		roberto.setRoles(rolesStandard);
+		maria.setRoles(rolesStandard);
+		rebeca.setRoles(rolesAdmin);
 		adminUser.setRoles(roles);
 		entityManager.persist(adminUser);
+		entityManager.persist(felipe);
+		entityManager.persist(roberto);
+		entityManager.persist(maria);
+		entityManager.persist(rebeca);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ErrorBufferService } from './error-buffer.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+
+  errors: Observable<string[]>;
+
+  constructor(private errorBufferService: ErrorBufferService){
+    this.errors = errorBufferService.getErrors();
+  }
+
+  addError(message){
+    this.errorBufferService.addError(message);
+  }
+
 }

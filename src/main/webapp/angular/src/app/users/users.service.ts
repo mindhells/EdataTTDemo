@@ -10,7 +10,6 @@ export class UsersService {
   constructor(@Inject("API_PATH") private apiPath, private http: HttpClient) {}
 
   getUsers(offset = 0, limit = 10, orderBy?: string, orderDirection?: string): Observable<User[]>{
-
     let p = {"offset": offset, "limit": limit, "orderBy": orderBy, "orderDirection": orderDirection};
     const params = new HttpParams({ fromObject:
       {
@@ -23,6 +22,10 @@ export class UsersService {
     return this.http.get<User[]>(`${this.apiPath}/users`, {
       params: params
     });
+  }
+
+  createUser(user: User): Observable<User>{
+    return this.http.post<User>(`${this.apiPath}/users`, user, {headers: {'Content-Type': 'application/json', "Authorization": "Basic " + btoa("admin:3d4t4")}});
   }
 
 }

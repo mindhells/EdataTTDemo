@@ -9,6 +9,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import es.edataconsulting.demo.model.ErrorMessage;
 import es.edataconsulting.demo.model.Role;
 import es.edataconsulting.demo.model.User;
 
@@ -81,36 +83,52 @@ public class UserResources {
 	@POST
 	@RolesAllowed("admin")
 	public Response addUser(User user) {
-		entityManager.getTransaction().begin();		
-		if (user.getRoles().isEmpty()) {
-			Set<Role> roleSet = new HashSet<>();
-			roleSet.add(entityManager.find(Role.class, "standard"));
-			user.setRoles(roleSet);
-		}
-		entityManager.persist(user);
-		entityManager.getTransaction().commit();
-		return Response.status(Status.CREATED)
-				.entity(user)
-				.build();
+		try {
+			entityManager.getTransaction().begin();		
+			if (user.getRoles().isEmpty()) {
+				Set<Role> roleSet = new HashSet<>();
+				roleSet.add(entityManager.find(Role.class, "standard"));
+				user.setRoles(roleSet);
+			}
+			entityManager.persist(user);
+			entityManager.getTransaction().commit();
+			return Response.status(Status.CREATED)
+					.entity(user)
+					.build();
+		}catch (PersistenceException exception) {
+			entityManager.getTransaction().rollback();
+			return Response.status(Status.BAD_REQUEST).entity(new ErrorMessage("Cannot create the user... ¿already exists?", 400)).build();
+		}		
 	}
 	
 	@PUT
 	@RolesAllowed("admin")
-	public User updateUser(User user) {
-		entityManager.getTransaction().begin();		
-		entityManager.merge(user);
-		entityManager.getTransaction().commit();
-		return user;
+	public Response updateUser(User user) {
+		try {
+			entityManager.getTransaction().begin();		
+			entityManager.merge(user);
+			entityManager.getTransaction().commit();
+			return Response.status(Status.OK).entity(user).build();
+		}catch (PersistenceException exception) {
+			entityManager.getTransaction().rollback();
+			return Response.status(Status.BAD_REQUEST).entity(new ErrorMessage("Cannot update the user...", 400)).build();
+		}	
 	}
 	
 	@DELETE
 	@RolesAllowed("admin")
 	@Path("/{userId}")
-	public void deleteUser(@PathParam("userId") long userId) {
-		User user = entityManager.find(User.class, userId);
-		entityManager.getTransaction().begin();		
-		entityManager.remove(user);
-		entityManager.getTransaction().commit();
+	public Response deleteUser(@PathParam("userId") long userId) {
+		try {
+			User user = entityManager.find(User.class, userId);	
+			entityManager.getTransaction().begin();		
+			entityManager.remove(user);
+			entityManager.getTransaction().commit();
+			return Response.status(Status.OK).entity(user).build();
+		}catch (PersistenceException exception) {
+			entityManager.getTransaction().rollback();
+			return Response.status(Status.BAD_REQUEST).entity(new ErrorMessage("Cannot delete the user...", 400)).build();
+		}	
 	}
 	
 	@PermitAll

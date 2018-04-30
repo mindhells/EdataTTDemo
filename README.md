@@ -22,3 +22,4 @@ Technical test DEMO
 - created user list with sorting a pagination and a service connecting to API
 - created a user form with angular reactive forms and a service sending new users to API
 - basic error handling
+- basic sercurity with non-checking login 

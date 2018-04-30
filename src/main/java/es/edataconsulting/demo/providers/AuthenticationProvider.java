@@ -11,7 +11,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -106,7 +106,7 @@ public class AuthenticationProvider implements ContainerRequestFilter {
 		TypedQuery<User> q = entityManager.createQuery(criteria);
 		try {
 			return q.getSingleResult();
-		}catch (NoResultException exception) {
+		}catch (PersistenceException exception) {
 			return null;
 		}
 	}

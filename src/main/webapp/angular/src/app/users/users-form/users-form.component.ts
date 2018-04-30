@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
 import { ErrorBufferService } from '../../error-buffer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-form',
@@ -11,7 +12,7 @@ import { ErrorBufferService } from '../../error-buffer.service';
 export class UsersFormComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private usersService: UsersService,
-    private errorBufferService: ErrorBufferService) { }
+    private errorBufferService: ErrorBufferService, private router: Router) { }
 
   userForm: FormGroup;
 
@@ -31,7 +32,7 @@ export class UsersFormComponent implements OnInit {
     this.usersService.createUser(this.userForm.value).subscribe(
       user => {
         console.log("created", user);
-        this.sending = false;
+        this.router.navigate(["/users"]);
       },
       result => {
         console.log("error", result.error);

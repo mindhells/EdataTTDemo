@@ -13,6 +13,10 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/users/new" routerLinkActive="active">New user</a>
       </li>
+      <li class="nav-item align-self-end">
+        <a class="nav-link text-success" *ngIf="!authService.isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
+        <a class="nav-link text-danger" *ngIf="authService.isLoggedIn" (click)="authService.logout()">Logout</a>
+      </li>
     </ul>
   </div>
 </nav>

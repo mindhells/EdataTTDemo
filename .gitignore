@@ -51,5 +51,6 @@ src/main/webapp/inline.bundle.js
 src/main/webapp/main.bundle.js
 src/main/webapp/polyfills.bundle.js
 src/main/webapp/styles.bundle.js
+src/main/webapp/scripts.bundle.js
 src/main/webapp/index.html
 src/main/webapp/3rdpartylicenses.txt

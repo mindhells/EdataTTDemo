@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json -dop false",
     "build": "ng build --prod",
-    "install": "./node_modules/@angular/cli/bin/ng build -prod -oh none -ec false -aot --deploy-url demo -dop false",
+    "install": "./node_modules/@angular/cli/bin/ng build -prod -oh none -ec false -aot --base-href /demo/ -dop false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

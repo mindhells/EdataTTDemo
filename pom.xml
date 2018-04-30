@@ -52,6 +52,13 @@
 					</execution>
 			    </executions>        		
 		    </plugin>
+		    <plugin>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>3.2.0</version>
+		        <configuration>
+		          <packagingExcludes>angular/</packagingExcludes>
+		        </configuration>
+		     </plugin>
         </plugins>
     </build>
 

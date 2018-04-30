@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -19,10 +20,14 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+
     RouterModule.forRoot(routes, {useHash: true}),
     UsersModule
   ],
-  providers: [],
+  providers: [
+    {provide: "API_PATH", useValue: "webapi"}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

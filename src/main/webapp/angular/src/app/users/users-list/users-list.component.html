@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users | async; trackBy: trackUser">
+      <tr *ngFor="let user of users; trackBy: trackUser">
         <th scope="row">{{user.id}}</th>
         <td>{{user.name}}</td>
         <td>{{user.login}}</td>

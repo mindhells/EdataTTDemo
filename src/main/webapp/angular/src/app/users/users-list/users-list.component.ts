@@ -13,7 +13,7 @@ export class UsersListComponent implements OnInit {
 
   constructor(private usersService: UsersService) { }
 
-  users: Observable<User[]>;
+  users: User[] = [];
 
   ngOnInit() {
     this.loadPage(true);
@@ -51,12 +51,17 @@ export class UsersListComponent implements OnInit {
       this.hasNext = false;
       this.hasPrevious = false;
     }
-    this.users = this.usersService.getUsers(this.page * this.pageSize, this.pageSize, this.orderBy, this.orderDirection).pipe(
-      tap( users => {
-        this.hasNext = users.length >= this.pageSize;
-        this.hasPrevious = this.page > 0;
-      })
-    );
+    this.usersService.getUsers(this.page * this.pageSize, this.pageSize, this.orderBy, this.orderDirection)
+    .subscribe( users => {
+      if (users.length == 0){
+        this.page = Math.max(this.page -1, 0);
+        this.hasNext = false;
+      }else{
+        this.users = users;
+        this.hasNext = users.length == this.pageSize;
+      }
+      this.hasPrevious = this.page > 0;
+    })
   }
 
   trackUser(i: number, u: User){
